@@ -1,0 +1,27 @@
+image: node:16
+
+# Workflow Configuration
+# bitbucket pipeline 07/2022
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm install
+      - step:
+          name: Deploy to Production
+          deployment: Production
+          script:
+            - ssh -tt ec2-user@34.207.128.135 << EOSSH
+            - . ~/.nvm/nvm.sh
+            - cd /home/ec2-user/docker-test-chat
+            - git pull origin master
+            - docker-compose build
+            - docker stop $(docker ps -q)
+            - docker-compose up -d
+            - exit
+            - EOSSH

@@ -1,0 +1,103 @@
+html,
+body {
+  height: 100%;
+  background: #fff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#chat {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0.5vw;
+}
+
+input {
+  width: 100%;
+  border: 1px solid rgb(238, 238, 238);
+  height: 4vw;
+  padding: 0 2vw;
+  font-size: 1.5vw;
+  background: rgb(238, 238, 238);
+  border-radius: 8px;
+}
+
+button {
+  width: 60vw;
+  height: 4vw;
+  font-size: 1.5vw;
+  background: #0fabbe;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  line-height: 5vw;
+  font-weight: bold;
+  color: rgb(238, 238, 238);
+  margin-top: 1vw;
+  border: none;
+  border-radius: 200px;
+  cursor: pointer;
+}
+
+.messages {
+  width: 60vw;
+  height: 100%;
+  margin: 2vw 0;
+  border: 1px solid rgb(238, 238, 238);
+  padding: 2vw;
+  border-radius: 8px;
+  background: rgb(238, 238, 238);
+}
+
+.message {
+  display: grid;
+  justify-content: start;
+}
+
+img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.inputStyle {
+  width: 60vw;
+  display: flex;
+  gap: 10px;
+}
+.inputMessage {
+  width: 30%;
+  gap: 5px;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: "Enviar imagem";
+  display: flex;
+
+  border-radius: 3px;
+
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  width: 100%;
+  height: 100%;
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}

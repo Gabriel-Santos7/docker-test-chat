@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Chat - 04/07/2022</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  </head>
+  <body>
+    <form id="chat">
+      <div class="inputStyle">
+        <input
+          type="text "
+          id="name"
+          class="form-control"
+          placeholder="Seu nome"
+        />
+      </div>
+      <div class="messages" id="messages"></div>
+      <div class="inputStyle">
+        <input
+          type="text"
+          id="message"
+          class="form-control"
+          placeholder="Digite uma mensagem"
+        />
+        <div class="inputMessage">
+          <input
+            type="file"
+            id="imageInput"
+            accept="image/png"
+            class="custom-file-input"
+          />
+        </div>
+      </div>
+
+      <button type="submit" id="send">Enviar</button>
+    </form>
+    <script>
+      var socket = io();
+
+      const image_input = document.querySelector("#imageInput");
+      var img = "";
+
+      image_input.addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          const uploaded_image = reader.result;
+          document.querySelector(
+            "#imageInput"
+          ).style.backgroundColor = `#0fabbe`;
+          document.querySelector("#imageInput").style.color = `#fff`;
+        });
+
+        reader.readAsDataURL(this.files[0]);
+        reader.onloadend = (event) => {
+          img = document.getElementById("imageInput");
+          img.src = event.target.result;
+        };
+      });
+
+      $(() => {
+        $("#send").click(() => {
+          sendMessage({
+            name: $("#name").val(),
+            message: $("#message").val(),
+            image: $("#imageInput").val(),
+          });
+        });
+
+        getMessages();
+      });
+
+      socket.on("message", addMessages);
+
+      $("#chat").submit((event) => event.preventDefault());
+
+      function addMessages(message) {
+        $("#messages").append(
+          `<div class="message"><span><strong> ${message.name}: </strong> ${message.message}</span> <img class="" title="${message.image}" src="${message.image}"></div>`
+        );
+      }
+
+      function getMessages() {
+        $.get("http://34.207.128.135:3000/messages", (data) => {
+          data.forEach(addMessages);
+        });
+      }
+
+      function sendMessage(message) {
+        message.image = img.src;
+
+        $.post("http://34.207.128.135:3000/messages", message);
+      }
+    </script>
+  </body>
+</html>
